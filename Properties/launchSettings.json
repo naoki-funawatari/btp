@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "btp": {
+      "commandName": "Project",
+      "commandLineArgs": "F:\\bmpdata"
+    }
+  }
+}
