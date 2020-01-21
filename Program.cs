@@ -37,14 +37,21 @@ namespace btp
         /// <summary>
         /// 画像を PNG ファイルに変換します。
         /// </summary>
-        /// <param name="path">画像のパス。</param>
-        private static void ConvertToPNG(string path)
+        /// <param name="originalFilePath">画像のパス。</param>
+        private static void ConvertToPNG(string originalFilePath)
         {
-            Console.WriteLine(path);
-            var directoryName = Path.GetDirectoryName(path);
-            var fileName = $"{Path.GetFileNameWithoutExtension(path)}.png";
-            using var bmp = new Bitmap(path);
-            bmp.Save(Path.Combine(directoryName, fileName), ImageFormat.Png);
+            Console.WriteLine(originalFilePath);
+            var directoryName = Path.GetDirectoryName(originalFilePath);
+            var temporaryFileName = $"{Path.GetFileNameWithoutExtension(originalFilePath)}_tmp.png";
+            var temporaryFilePath = Path.Combine(directoryName, temporaryFileName);
+            using (var bmp = new Bitmap(originalFilePath))
+            {
+                bmp.Save(temporaryFilePath, ImageFormat.Png);
+            }
+            File.Delete(originalFilePath);
+            var newFileName = $"{Path.GetFileNameWithoutExtension(originalFilePath)}.png";
+            var newFilePath = Path.Combine(directoryName, newFileName);
+            File.Move(temporaryFilePath, newFilePath);
         }
     }
 }
