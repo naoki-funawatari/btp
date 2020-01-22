@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -18,6 +19,8 @@ namespace btp
             RecursivelySearchDirectories(directory: args[0]);
         }
 
+        private static readonly string[] TargetExtensions = { ".bmp", ".png" };
+
         /// <summary>
         /// ディレクトリを再帰的に探索します。
         /// </summary>
@@ -26,6 +29,7 @@ namespace btp
         {
             Directory
                 .GetFiles(directory)
+                .Where(o => TargetExtensions.Any(ext => ext == Path.GetExtension(o).ToLower(CultureInfo.CurrentCulture)))
                 .ToList()
                 .ForEach(ConvertToPNG);
             Directory
