@@ -29,13 +29,24 @@ namespace btp
         {
             Directory
                 .GetFiles(directory)
-                .Where(o => TargetExtensions.Any(ext => ext == Path.GetExtension(o).ToLower(CultureInfo.CurrentCulture)))
+                .Where(IsTargetExtensionFile)
                 .ToList()
                 .ForEach(ConvertToPNG);
             Directory
                 .GetDirectories(directory)
                 .ToList()
                 .ForEach(RecursivelySearchDirectories);
+        }
+
+        /// <summary>
+        /// 指定されたファイルの拡張子が対象の拡張子かどうか示す値を取得します。
+        /// </summary>
+        /// <param name="fileName">ファイル名。</param>
+        /// <returns>対象の拡張子の場合 true。</returns>
+        private static bool IsTargetExtensionFile(string fileName)
+        {
+            return TargetExtensions
+                .Any(o => o == Path.GetExtension(fileName).ToLower(CultureInfo.CurrentCulture));
         }
 
         /// <summary>
