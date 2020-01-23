@@ -16,7 +16,7 @@ namespace btp
                 Console.WriteLine("ディレクトリが存在しません。");
                 return;
             }
-            RecursivelySearchDirectories(directory: args[0]);
+            RecursivelySearchDirectories(directoryName: args[0]);
         }
 
         private static readonly string[] TargetExtensions = { ".bmp", ".png" };
@@ -24,16 +24,16 @@ namespace btp
         /// <summary>
         /// ディレクトリを再帰的に探索します。
         /// </summary>
-        /// <param name="directory">探索するディレクトリ。</param>
-        private static void RecursivelySearchDirectories(string directory)
+        /// <param name="directoryName">探索するディレクトリ。</param>
+        private static void RecursivelySearchDirectories(string directoryName)
         {
             Directory
-                .GetFiles(directory)
+                .GetFiles(directoryName)
                 .Where(IsTargetExtensionFile)
                 .ToList()
                 .ForEach(ConvertToPNG);
             Directory
-                .GetDirectories(directory)
+                .GetDirectories(directoryName)
                 .ToList()
                 .ForEach(RecursivelySearchDirectories);
         }
